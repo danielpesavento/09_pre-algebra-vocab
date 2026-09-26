@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-Algebra Vocabulary - Matching Knowledge Check - Interactive Practice</title>
+<style>
+  :root {
+    --navy: #1a3a5c;
+    --navy-dark: #10253d;
+    --gold: #c9a227;
+    --gold-light: #e8d38a;
+    --cream: #faf8f3;
+    --green: #2e7d47;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: Calibri, "Segoe UI", Arial, sans-serif;
+    background: var(--cream);
+    color: var(--navy-dark);
+    margin: 0;
+    padding: 0 0 60px 0;
+  }
+  header {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 24px 20px;
+    text-align: center;
+    border-bottom: 6px solid var(--gold);
+  }
+  header h1 {
+    margin: 0 0 6px 0;
+    font-size: 1.5em;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .student-field {
+    background: #fff;
+    border: 2px solid var(--navy);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    max-width: 500px;
+  }
+  .student-field label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    color: var(--navy);
+  }
+  .student-field input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    font-family: inherit;
+    border: 1px solid #999;
+    border-radius: 5px;
+  }
+  .instructions-banner {
+    background: #fff8e6;
+    border-left: 4px solid var(--gold);
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-style: italic;
+    font-size: 0.95em;
+  }
+  .match-layout {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  .terms-column {
+    flex: 1 1 420px;
+    min-width: 320px;
+  }
+  .definitions-column {
+    flex: 1 1 360px;
+    min-width: 300px;
+    background: #fff;
+    border: 2px solid var(--navy);
+    border-radius: 8px;
+    padding: 18px 20px;
+    position: sticky;
+    top: 16px;
+  }
+  .definitions-column h3 {
+    margin-top: 0;
+    color: var(--navy);
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 8px;
+  }
+  .def-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95em;
+  }
+  .def-item:last-child { border-bottom: none; }
+  .def-letter {
+    font-weight: bold;
+    color: var(--navy);
+    margin-right: 6px;
+  }
+  .term-row {
+    background: #fff;
+    margin: 10px 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .term-label {
+    font-weight: bold;
+    color: var(--navy-dark);
+    font-size: 1.05em;
+    min-width: 220px;
+  }
+  .term-number {
+    color: var(--gold);
+    font-weight: bold;
+    margin-right: 4px;
+  }
+  .answer-input {
+    width: 55px;
+    padding: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    border: 1px solid #999;
+    border-radius: 5px;
+    font-family: inherit;
+  }
+  .submit-section {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    border-top: 2px solid var(--gold);
+  }
+  button.submit-btn {
+    background: var(--gold);
+    color: var(--navy-dark);
+    font-weight: bold;
+    font-size: 1.05em;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  button.submit-btn:hover { background: var(--gold-light); }
+  button.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .status-msg {
+    margin-top: 14px;
+    font-weight: bold;
+    color: var(--navy);
+    font-size: 1.05em;
+  }
+  @media (max-width: 760px) {
+    .definitions-column { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Pre-Algebra Vocabulary - Matching Knowledge Check - Interactive Practice</h1>
+</header>
+
+<div class="container">
+
+  <div class="student-field">
+    <label for="studentName">Student Name:</label>
+    <input type="text" id="studentName" placeholder="Type your full name">
+  </div>
+
+  <div class="instructions-banner">
+    Match each numbered vocabulary term on the left to its definition on the right. Type the letter of the matching definition in the box next to each term.
+  </div>
+
+  <div class="match-layout">
+    <div class="terms-column" id="termsColumn"></div>
+    <div class="definitions-column">
+      <h3>Definitions</h3>
+      <div id="definitionsList"></div>
+    </div>
+  </div>
+
+  <div class="submit-section">
+    <button class="submit-btn" id="submitBtn" onclick="submitQuiz()">Submit Activity</button>
+    <div class="status-msg" id="statusMsg"></div>
+    <div class="status-msg" id="statusMsgSub" style="font-size:0.85em; font-weight:normal; color:#555;"></div>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   CONFIG: paste your deployed Google Apps Script Web App URL here
+   ========================================================= */
+const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxNG-OhD5l27FJJtNpcMRuRAcn33U7mdAqpiifttAmsmLr7t9Sfk3ktr-p5Nt5oO97pXg/exec";
+
+const TOTAL_TERMS = 12;
+
+/* =========================================================
+   TERMS - alphabetical order, numbered 1-12
+   correct: the letter (A-L) of the matching definition below
+   ========================================================= */
+const terms = [
+  { id: 1,  term: "Addition",       correct: "B", definition: "The sum of; combining two or more numbers or quantities." },
+  { id: 2,  term: "Coefficient",    correct: "D", definition: "The number that multiplies a variable." },
+  { id: 3,  term: "Division",       correct: "J", definition: "The quotient of; splitting a number or quantity into equal parts." },
+  { id: 4,  term: "Equation",       correct: "K", definition: "A math sentence that shows two expressions are equal." },
+  { id: 5,  term: "Evaluate",       correct: "A", definition: "Find the value of an expression (i.e., solve it)." },
+  { id: 6,  term: "Expression",     correct: "H", definition: "A math phrase with numbers, variables, and operations." },
+  { id: 7,  term: "Multiplication", correct: "L", definition: "The product of; repeated addition of the same number." },
+  { id: 8,  term: "Ratio",          correct: "F", definition: "A comparison of two quantities by division." },
+  { id: 9,  term: "Subtraction",    correct: "E", definition: "The difference of; taking one number or quantity away from another." },
+  { id: 10, term: "Term",           correct: "G", definition: "A number, variable, or product of numbers and variables." },
+  { id: 11, term: "Unit rate",      correct: "C", definition: "A ratio that compares one unit of a quantity to another." },
+  { id: 12, term: "Variable",       correct: "I", definition: "A letter or symbol that represents an unknown number." }
+];
+
+/* =========================================================
+   DEFINITIONS LIST - shuffled order, labeled A-L
+   (matches the "correct" letters assigned to each term above)
+   ========================================================= */
+const definitionsByLetter = [
+  { letter: "A", text: "Find the value of an expression (i.e., solve it)." },
+  { letter: "B", text: "The sum of; combining two or more numbers or quantities." },
+  { letter: "C", text: "A ratio that compares one unit of a quantity to another." },
+  { letter: "D", text: "The number that multiplies a variable." },
+  { letter: "E", text: "The difference of; taking one number or quantity away from another." },
+  { letter: "F", text: "A comparison of two quantities by division." },
+  { letter: "G", text: "A number, variable, or product of numbers and variables." },
+  { letter: "H", text: "A math phrase with numbers, variables, and operations." },
+  { letter: "I", text: "A letter or symbol that represents an unknown number." },
+  { letter: "J", text: "The quotient of; splitting a number or quantity into equal parts." },
+  { letter: "K", text: "A math sentence that shows two expressions are equal." },
+  { letter: "L", text: "The product of; repeated addition of the same number." }
+];
+
+const state = {};
+
+const alreadySubmitted = {};
+terms.forEach(t => { alreadySubmitted[t.id] = false; });
+let submissionCount = 0;
+
+function buildActivity() {
+  const termsColumn = document.getElementById("termsColumn");
+  terms.forEach(t => {
+    const row = document.createElement("div");
+    row.className = "term-row";
+    row.id = "row-" + t.id;
+    row.innerHTML = `
+      <div class="term-label"><span class="term-number">${t.id}.</span>${t.term}</div>
+      <input type="text" class="answer-input" id="input-${t.id}" maxlength="1" placeholder="?" oninput="onAnswerEdited(${t.id})">
+    `;
+    termsColumn.appendChild(row);
+  });
+
+  const defList = document.getElementById("definitionsList");
+  definitionsByLetter.forEach(d => {
+    const div = document.createElement("div");
+    div.className = "def-item";
+    div.innerHTML = `<span class="def-letter">${d.letter}.</span>${d.text}`;
+    defList.appendChild(div);
+  });
+}
+
+function getSelected(id) {
+  const input = document.getElementById("input-" + id);
+  return input ? input.value.trim().toUpperCase() : "";
+}
+
+// Editing a box after it was already sent makes it eligible to be
+// resent on the next Submit Activity click, since there's no
+// separate Clear Answer button to do that explicitly.
+function onAnswerEdited(id) {
+  alreadySubmitted[id] = false;
+}
+
+function submitQuiz() {
+  const name = document.getElementById("studentName").value.trim();
+  const statusMsg = document.getElementById("statusMsg");
+  const statusMsgSub = document.getElementById("statusMsgSub");
+
+  if (!name) {
+    alert("Please enter your name before submitting.");
+    return;
+  }
+
+  const answers = terms.map(t => {
+    if (alreadySubmitted[t.id]) return "";
+    const val = getSelected(t.id);
+    return val ? val : "";
+  });
+
+  const newlyIncludedIds = terms
+    .filter(t => !alreadySubmitted[t.id] && getSelected(t.id))
+    .map(t => t.id);
+
+  if (newlyIncludedIds.length === 0) {
+    alert("You haven't answered any new terms since your last submission. Answer at least one before submitting again.");
+    return;
+  }
+
+  const payload = {
+    timestamp: new Date().toISOString(),
+    student: name,
+    answers: answers
+  };
+
+  const submitBtn = document.getElementById("submitBtn");
+  submitBtn.disabled = true;
+  statusMsg.textContent = "Submitting...";
+
+  fetch(GAS_WEB_APP_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  }).then(() => {
+    newlyIncludedIds.forEach(id => { alreadySubmitted[id] = true; });
+    submissionCount++;
+    statusMsg.textContent = "Submitted! Thank you, " + name + ".";
+    statusMsgSub.textContent = `This submission (#${submissionCount}) sent ${newlyIncludedIds.length} term${newlyIncludedIds.length === 1 ? "" : "s"}. You can keep working and click Submit Activity again later to send more.`;
+    submitBtn.disabled = false;
+  }).catch(() => {
+    statusMsg.textContent = "Submission may have failed - check your connection and try again.";
+    submitBtn.disabled = false;
+  });
+}
+
+buildActivity();
+</script>
+
+</body>
+</html>
